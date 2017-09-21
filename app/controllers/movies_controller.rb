@@ -34,7 +34,7 @@ class MoviesController < ApplicationController
     end
     
     if will_redirect
-      movies_path(:sort => @sort, :ratings => @ratings)
+      redirect_to movies_path(:sort => @sort, :ratings => @ratings)
     end
     
     @current_ratings = @ratings.keys
