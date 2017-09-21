@@ -11,19 +11,28 @@ class MoviesController < ApplicationController
   end
 
   def index
+    # Alter @sort and @ratings appropriately...
+    @sort = session[:sort]
+    @ratings = session[:ratings]
+    
     @all_ratings = Movie.ratings
-    @ratings = []
     ratingsList = params[:ratings_]
     if ratingsList
       @ratings = ratingsList.keys
-    else
+    elsif !@ratings
       @ratings = @all_ratings
     end
     @movies = Movie.where({rating: @ratings})
-    @sort = params[:sort]
+    priority_sort = params[:sort]
+    if priority_sort
+      @sort = priority_sort
+    end
     if @sort
       @movies.order!(@sort)
     end
+    
+    session[:sort] = @sort
+    session[:ratings] = @ratings
   end
 
   def new
