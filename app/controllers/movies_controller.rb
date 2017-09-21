@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
     @ratings = session[:ratings]
     
     @all_ratings = Movie.ratings
-    ratingsList = params[:ratings_]
+    ratingsList = params[:ratings]
     if ratingsList
       @ratings = ratingsList.keys
     elsif !@ratings
