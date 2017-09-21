@@ -26,8 +26,9 @@ class MoviesController < ApplicationController
     
     priority_sort = params[:sort]
     if priority_sort
-      @movies.order!(priority_sort)
-    elsif @sort
+      @sort = priority_sort
+    end
+    if @sort
       @movies.order!(@sort)
     end
     
