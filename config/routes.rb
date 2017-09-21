@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'movies#index'
-  get 'movies' => 'movies#sort', :as => 'sort_movies'
+  get 'movies/sorted' => 'movies#sort', :as => 'sort_movies'
   get 'movies/filter' => 'movies#filter', :as => 'filter_movies'
 
   # Example of regular route:
