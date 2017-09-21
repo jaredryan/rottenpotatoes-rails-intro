@@ -23,6 +23,7 @@ class MoviesController < ApplicationController
       @ratings = @all_ratings
     end
     @movies = Movie.where({rating: @ratings})
+    
     priority_sort = params[:sort]
     if priority_sort
       @sort = priority_sort
