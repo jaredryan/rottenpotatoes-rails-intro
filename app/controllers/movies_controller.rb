@@ -14,25 +14,37 @@ class MoviesController < ApplicationController
     # Alter @sort and @ratings appropriately...
     @sort = session[:sort]
     @ratings = session[:ratings]
+    will_redirect = false
     
-    @all_ratings = Movie.ratings
     ratingsList = params[:ratings]
     if ratingsList
-      @ratings = ratingsList.keys
+      @ratings = ratingsList
     elsif !@ratings
-      @ratings = @all_ratings
+      @ratings = Movie.ratings_hash
+      will_redirect = true
+    else
+      will_redirect = true
     end
-    @movies = Movie.where({rating: @ratings})
     
     priority_sort = params[:sort]
     if priority_sort
       @sort = priority_sort
+    elsif @sort
+      will_redirect = true
     end
+    
+    if will_redirect
+      movies_path(:sort => @sort, :ratings => @ratings)
+    end
+    
+    @current_ratings = @ratings.keys
+    @movies = Movie.where({rating: @current_ratings})
     if @sort
       @movies.order!(@sort)
     end
+    @all_ratings = Movie.ratings
     
-    session[:sort] = priority_sort
+    session[:sort] = @sort
     session[:ratings] = @ratings
   end
 
