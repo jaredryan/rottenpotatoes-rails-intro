@@ -26,13 +26,9 @@ class MoviesController < ApplicationController
     
     priority_sort = params[:sort]
     if priority_sort
-      @sort = priority_sort
-    end
-    if @sort
       @movies.order!(@sort)
     end
     
-    session[:sort] = @sort
     session[:ratings] = @ratings
   end
 
@@ -62,6 +58,31 @@ class MoviesController < ApplicationController
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
+  end
+
+  def sort
+    last_sort = session[:sort]
+    priority_sort = params[:sort]
+    if priority_sort
+      session[:sort] = priority_sort
+      redirect_to movies_path(:sort => priority_sort)
+    elsif @sort
+      redirect_to movies_path(:sort => last_sort)
+    else
+      redirect_to movies_path
+    end
+  end
+  
+  def filter
+    last_ratings = session[:ratings]
+    ratingsList = params[:ratings_]
+    byebug
+    if ratingsList
+      session[:ratings] = @ratings
+      movies_path(:ratings_ => ratingsList)
+    elsif !@ratings
+      movies_path(:ratings_ => last_ratings)
+    end
   end
 
 end
